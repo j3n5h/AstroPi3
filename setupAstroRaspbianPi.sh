@@ -733,7 +733,7 @@ then
 	cd $USERHOME/AstroRoot/indi
 else
 	cd $USERHOME/AstroRoot/indi
-	sudo -H -u $SUDO_USER git pull
+	# sudo -H -u $SUDO_USER git pull
 fi
 
 # # list all repo tags
@@ -760,22 +760,22 @@ display "Building and Installing Core LibINDI"
 sudo -H -u $SUDO_USER mkdir -p $USERHOME/AstroRoot/indi-build/indi-core
 cd $USERHOME/AstroRoot/indi-build/indi-core
 sudo -H -u $SUDO_USER cmake -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=RelWithDebInfo $USERHOME/AstroRoot/indi
-sudo -H -u $SUDO_USER make -j $(expr $(nproc) + 2)
+sudo -H -u $SUDO_USER make -j $(expr $(nproc) / 2)
 sudo make install
 
-# This builds and installs INDI 3rd Party
-display "Building and Installing INDI 3rd Party"
+# # This builds and installs INDI 3rd Party
+# display "Building and Installing INDI 3rd Party"
 
-if [ ! -d $USERHOME/AstroRoot/indi-3rdparty ]
-then
-	cd $USERHOME/AstroRoot/
-	sudo -H -u $SUDO_USER git clone --depth 1 --branch v1.8.7 https://github.com/indilib/indi-3rdparty.git
-	sudo -H -u $SUDO_USER mkdir -p $USERHOME/AstroRoot/indi-build
-	cd $USERHOME/AstroRoot/indi-3rdparty
-else
-	cd $USERHOME/AstroRoot/indi-3rdparty
-	sudo -H -u $SUDO_USER git pull
-fi
+# if [ ! -d $USERHOME/AstroRoot/indi-3rdparty ]
+# then
+# 	cd $USERHOME/AstroRoot/
+# 	sudo -H -u $SUDO_USER git clone --depth 1 --branch v1.8.7 https://github.com/indilib/indi-3rdparty.git
+# 	sudo -H -u $SUDO_USER mkdir -p $USERHOME/AstroRoot/indi-build
+# 	cd $USERHOME/AstroRoot/indi-3rdparty
+# else
+# 	cd $USERHOME/AstroRoot/indi-3rdparty
+# 	# sudo -H -u $SUDO_USER git pull
+# fi
 # # list all repo tags
 # tags=$(eval "git tag")
 # IFS=$'\n' lines=($tags)
@@ -797,19 +797,19 @@ fi
 # 	git checkout ${Releases_Tag}
 # fi
 
-display "Building and Installing the INDI 3rd Party Libraries"
-sudo -H -u $SUDO_USER mkdir -p $USERHOME/AstroRoot/indi-build/3rdparty-Libraries
-cd $USERHOME/AstroRoot/indi-build/3rdparty-Libraries
-sudo -H -u $SUDO_USER cmake -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=RelWithDebInfo -DBUILD_LIBS=1 $USERHOME/AstroRoot/indi-3rdparty
-sudo -H -u $SUDO_USER make -j $(expr $(nproc) + 2)
-sudo make install
+# display "Building and Installing the INDI 3rd Party Libraries"
+# sudo -H -u $SUDO_USER mkdir -p $USERHOME/AstroRoot/indi-build/3rdparty-Libraries
+# cd $USERHOME/AstroRoot/indi-build/3rdparty-Libraries
+# sudo -H -u $SUDO_USER cmake -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=RelWithDebInfo -DBUILD_LIBS=1 $USERHOME/AstroRoot/indi-3rdparty
+# sudo -H -u $SUDO_USER make -j $(expr $(nproc) / 2)
+# sudo make install
 
-display "Building and Installing the INDI 3rd Party Drivers"
-sudo -H -u $SUDO_USER mkdir -p $USERHOME/AstroRoot/indi-build/3rdparty-Drivers
-cd $USERHOME/AstroRoot/indi-build/3rdparty-Drivers
-sudo -H -u $SUDO_USER cmake -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=RelWithDebInfo -DWITH_FXLOAD=1 $USERHOME/AstroRoot/indi-3rdparty
-sudo -H -u $SUDO_USER make -j $(expr $(nproc) + 2)
-sudo make install
+# display "Building and Installing the INDI 3rd Party Drivers"
+# sudo -H -u $SUDO_USER mkdir -p $USERHOME/AstroRoot/indi-build/3rdparty-Drivers
+# cd $USERHOME/AstroRoot/indi-build/3rdparty-Drivers
+# sudo -H -u $SUDO_USER cmake -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=RelWithDebInfo -DWITH_FXLOAD=1 $USERHOME/AstroRoot/indi-3rdparty
+# sudo -H -u $SUDO_USER make -j $(expr $(nproc) / 2)
+# sudo make install
 
 # Installs the Astrometry.net package for supporting offline plate solves.  If you just want the online solver, comment this out with a #.
 display "Installing Astrometry.net"
@@ -830,16 +830,16 @@ display "Building and Installing StellarSolver"
 if [ ! -d $USERHOME/AstroRoot/stellarsolver ]
 then
 	cd $USERHOME/AstroRoot/
-	sudo -H -u $SUDO_USER git clone --depth 1 https://github.com/rlancaste/stellarsolver.git
+	sudo -H -u $SUDO_USER git clone --depth 1 --branch 1.5 https://github.com/rlancaste/stellarsolver.git
 	sudo -H -u $SUDO_USER mkdir -p $USERHOME/AstroRoot/stellar-build
 else
 	cd $USERHOME/AstroRoot/stellarsolver
-	sudo -H -u $SUDO_USER git pull
+	# sudo -H -u $SUDO_USER git pull
 fi
 
 cd $USERHOME/AstroRoot/stellar-build
 sudo -H -u $SUDO_USER cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_INSTALL_PREFIX=/usr $USERHOME/AstroRoot/stellarsolver/
-sudo -H -u $SUDO_USER make -j $(expr $(nproc) + 2)
+sudo -H -u $SUDO_USER make -j $(expr $(nproc) / 2)
 sudo make install
 
 #This builds and installs KStars
@@ -852,12 +852,12 @@ then
 	sudo -H -u $SUDO_USER mkdir -p $USERHOME/AstroRoot/kstars-build
 else
 	cd $USERHOME/AstroRoot/kstars
-	sudo -H -u $SUDO_USER git pull
+	# sudo -H -u $SUDO_USER git pull
 fi
 
 cd $USERHOME/AstroRoot/kstars-build
 sudo -H -u $SUDO_USER cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_INSTALL_PREFIX=/usr $USERHOME/AstroRoot/kstars/
-sudo -H -u $SUDO_USER make -j $(expr $(nproc) + 2)
+sudo -H -u $SUDO_USER make -j $(expr $(nproc) / 2)
 sudo make install
 
 # Installs the General Star Catalog if you plan on using the simulators to test (If not, you can comment this line out with a #)
@@ -872,7 +872,7 @@ then
 	fi
 	sudo -H -u $SUDO_USER tar -xvzf bincats_GSC_1.2.tar.gz
 	cd $USERHOME/AstroRoot/gsc/src
-	sudo -H -u $SUDO_USER make -j $(expr $(nproc) + 2)
+	sudo -H -u $SUDO_USER make -j $(expr $(nproc) / 2)
 	sudo -H -u $SUDO_USER mv gsc.exe gsc
 	sudo cp gsc /usr/bin/
 	cp -r $USERHOME/AstroRoot/gsc /usr/share/
@@ -908,7 +908,7 @@ fi
 
 cd $USERHOME/AstroRoot/phd2-build
 sudo -H -u $SUDO_USER cmake $USERHOME/AstroRoot/phd2
-sudo -H -u $SUDO_USER make -j $(expr $(nproc) + 2)
+sudo -H -u $SUDO_USER make -j $(expr $(nproc) / 2)
 sudo make install
 
 display "Installing Dependencies for wxFormBuilder and PHD Log Viewer"
@@ -932,7 +932,7 @@ sudo -H -u $SUDO_USER cp -f $USERHOME/AstroPi3/phdlogview.fbp $USERHOME/AstroRoo
 
 cd $USERHOME/AstroRoot/phdlogview/tmp
 sudo -H -u $SUDO_USER cmake -DHAVE_WXFB=0 $USERHOME/AstroRoot/phdlogview
-sudo -H -u $SUDO_USER make -j $(expr $(nproc) + 2)
+sudo -H -u $SUDO_USER make -j $(expr $(nproc) / 2)
 cp $USERHOME/AstroRoot/phdlogview/tmp/phdlogview /usr/bin/
 
 # This will make a shortcut to PHD Log Viewer.  If you aren't installing it, be sure to remove this too.
@@ -988,7 +988,7 @@ fi
 # This will make and install the program
 cd $USERHOME/AstroRoot/INDIWebManagerApp-build
 sudo -H -u $SUDO_USER cmake -DCMAKE_INSTALL_PREFIX=/usr $USERHOME/AstroRoot/INDIWebManagerApp/
-sudo -H -u $SUDO_USER make -j $(expr $(nproc) + 2)
+sudo -H -u $SUDO_USER make -j $(expr $(nproc) / 2)
 sudo make install
 
 # This will make a link to start INDIWebManagerApp on the desktop
@@ -1049,4 +1049,3 @@ chmod +x "$DIR/systemUpdater.sh"
 chmod +x "$DIR/backupOrRestore.sh"
 
 display "Script Execution Complete.  Your Raspberry Pi 3 or 4 should now be ready to use for Astrophotography.  You should restart your Pi."
-
